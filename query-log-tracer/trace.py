@@ -19,6 +19,8 @@ parser.add_argument('--target-column', help='Column name of you trace target')
 parser.add_argument('--filter-column', help='Column name that should be used for search filtering')
 parser.add_argument('--filter-value', help='Value that should be used for search filtering')
 
+parser.add_argument('--verbose', help='Verbose option', action='store_true')
+
 args = parser.parse_args()
 
 
@@ -111,10 +113,12 @@ def search(f, target_table, target_column, filter_column, filter_value):
             tokens = [ token for token in parsed[0].flatten() if not token.is_whitespace ]
 
             # debug
-            #print('log_date:', log_date)
-            #print('log_id:', log_id)
-            #print('log_command:', log_command)
-            #print('log_argument:', log_argument)
+            if args.verbose:
+                print('log_date:', log_date)
+                print('log_id:', log_id)
+                print('log_command:', log_command)
+                print('log_argument:', log_argument)
+                print('----------------')
             #print('parsed: ', parsed)
             #for token in tokens:
             #    print(type(token), token.ttype, ':', token)

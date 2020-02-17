@@ -269,11 +269,12 @@ def main():
             current += 1
 
     print('')
+    print('=== Summary ===')
     for hist in histories:
         if hist['value'] is not None:
-            print('{} {}.{} ({} = {}) is set: {}'.format(hist['log_date'], target_table, target_column, filter_column, filter_value, hist['value']))
+            print('{} {}.{} ({} = {}) was set to: {}'.format(hist['log_date'], target_table, target_column, filter_column, filter_value, hist['value']))
         if hist['increment'] is not None:
-            print('{} {}.{} ({} = {}) changes: {:+d}'.format(hist['log_date'], target_table, target_column, filter_column, filter_value, hist['increment']))
+            print('{} {}.{} ({} = {}) changed by: {:+d}'.format(hist['log_date'], target_table, target_column, filter_column, filter_value, hist['increment']))
 
 
 if __name__ == '__main__':

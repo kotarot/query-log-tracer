@@ -32,3 +32,8 @@ $ ./query-log-tracer/trace.py --log-file=./tests/files/general-query.log --targe
 2020-02-02T07:28:14.172518Z dtb_customer.point (id = 1) is set: '27'
 2020-02-02T07:33:41.745400Z dtb_customer.point (id = 1) changes: +500
 ```
+
+## TODO
+
+- [ ] Make a cli command.
+- [ ] Make it a pip.

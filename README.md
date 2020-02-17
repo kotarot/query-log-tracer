@@ -1,6 +1,6 @@
 # query-log-tracer
 
-A Python tool/library that traces a value in MYSQL general logs.
+A Python tool/library that traces a value in MySQL general logs.
 
 ## Usage
 

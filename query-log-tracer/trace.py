@@ -40,7 +40,12 @@ def search(f, target_table, target_column, filter_column, filter_value):
     iso8601_repattern = re.compile(iso8601_pattern)
 
     line = f.readline()
+    line_num = 0
     while line:
+        line_num += 1
+        if (line_num % 1000000 == 0):
+            print('  Reading {}th line...'.format(line_num))
+
         if type(line) is not str:
             try:
                 line = line.decode('utf-8')

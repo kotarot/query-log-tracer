@@ -33,6 +33,12 @@ $ ./query-log-tracer/trace.py --log-file=./tests/files/general-query.log --targe
 2020-02-02T07:33:41.745400Z dtb_customer.point (id = 1) changes: +500
 ```
 
+For EC-CUBE 2, try the following command.
+
+```
+$ ./query-log-tracer/trace.py --log-dir=your-directory --target-table=dtb_customer --target-column=point --filter-column=customer_id --filter-value=1
+```
+
 ## TODO
 
 - [ ] Make a cli command.

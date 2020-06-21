@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Point History Viewer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/foundation.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/vendor/modernizr.js"></script>
+  </head>
+  <body>
+    <div class="row">
+      <div class="large-12 columns">
+        <h1>Point History Viewer</h1>
+
+        <form>
+          <label for="customer-id">顧客ID
+            <input type="text" name="customer-id" id="customer-id" />
+          </label>
+          <label for="target-date">対象日
+            <input type="date" name="target-date" id="target-date" />
+          </label>
+          <a href="#" class="button radius" id="search">ポイント履歴検索</a>
+        </form>
+
+        <h3>検索結果</h3>
+        <div class="panel" id="output">
+        </div>
+
+        <style>
+          .disabled-button {
+            pointer-events: none;
+          }
+        </style>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/vendor/jquery.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/foundation.min.js"></script>
+        <script>
+          $(document).foundation();
+
+          $(function() {
+            var disableButton = function() {
+              $('#search').addClass('disabled-button').addClass('secondary');
+            };
+            var enableButton = function() {
+              $('#search').removeClass('disabled-button').removeClass('secondary');
+            };
+            var outputResult = function(str) {
+              $('#output').html(str);
+            }
+
+            $('#search').click(function() {
+              disableButton();
+
+              var customer_id = $('#customer-id').val();
+              var target_date = $('#target-date').val();
+
+              if ((customer_id < 1) || (1000000 < customer_id)) {
+                outputResult('顧客IDは1以上1000000未満の整数で入力してください。');
+                enableButton();
+                return;
+              } else if (!target_date) {
+                outputResult('対象日を入力してください。');
+                enableButton();
+                return;
+              }
+
+              outputResult('検索中... (数分かかることがあります)');
+              $.ajax('point-history-api.php', {
+                type: 'GET',
+                data: 'customer_id=' + customer_id + '&target_date=' + target_date
+              })
+              .done(function(data) {
+                outputResult(data.replaceAll("\n", '<br />'));
+                enableButton();
+              })
+              .fail(function() {
+                outputResult('検索に失敗しました。');
+                enableButton();
+              });
+            });
+          });
+        </script>
+      </div>
+    </div>
+  </body>
+</html>

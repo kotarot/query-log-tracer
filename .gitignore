@@ -137,3 +137,6 @@ dmypy.json
 
 # Test files
 !general-query.log
+
+# Config file
+web-ui/config.php

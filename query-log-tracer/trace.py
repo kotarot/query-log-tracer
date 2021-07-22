@@ -24,11 +24,9 @@ parser.add_argument('--verbose', help='Verbose option', action='store_true')
 args = parser.parse_args()
 
 
-# History of the values
-histories = []
-
-
 def search(f, target_table, target_column, filter_column, filter_value):
+    # History of the values
+    histories = []
 
     target_query_commands = ['INSERT', 'UPDATE']
 
@@ -241,16 +239,18 @@ def search(f, target_table, target_column, filter_column, filter_value):
 
         line = f.readline()
 
+    return histories
+
 
 def search_from_file(filename, target_table, target_column, filter_column, filter_value):
 
     # Open with binary mode, because sometimes encoding errors occur
     if filename.endswith('.gz'):
         with gzip.open(filename, mode='rb') as f:
-            search(f, target_table, target_column, filter_column, filter_value)
+            return search(f, target_table, target_column, filter_column, filter_value)
     else:
         with open(filename, mode='rb') as f:
-            search(f, target_table, target_column, filter_column, filter_value)
+            return search(f, target_table, target_column, filter_column, filter_value)
 
 
 def main():
@@ -262,7 +262,7 @@ def main():
 
     if args.log_file is not None:
         print('=== Searching in {} ==='.format(args.log_file))
-        search_from_file(args.log_file, target_table, target_column, filter_column, filter_value)
+        histories = search_from_file(args.log_file, target_table, target_column, filter_column, filter_value)
 
     elif args.log_dir is not None:
         files = sorted(glob.glob(args.log_dir + '/*'))
@@ -270,7 +270,7 @@ def main():
         current = 1
         for log_file in files:
             print('=== Searching in {} ({}/{}) ==='.format(log_file, current, num_files))
-            search_from_file(log_file, target_table, target_column, filter_column, filter_value)
+            histories = search_from_file(log_file, target_table, target_column, filter_column, filter_value)
             current += 1
 
     print('')

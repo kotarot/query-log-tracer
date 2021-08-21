@@ -11,3 +11,22 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+import re
+
+import query_log_tracer as qlt
+
+
+def test_version_format():
+    assert re.match(r"^\d+.\d+.\d+(.(dev|a|b|rc)\d+)?$", qlt.__version__)
+
+
+def test_version_info_format():
+    ver_info = qlt.__version_info__
+    assert len(ver_info) in (3, 4)
+
+    assert isinstance(ver_info[0], int)
+    assert isinstance(ver_info[1], int)
+    assert isinstance(ver_info[2], int)
+    if len(ver_info) == 4:
+        assert isinstance(ver_info[3], str)

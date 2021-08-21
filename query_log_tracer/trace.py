@@ -7,24 +7,7 @@ import re
 import sqlparse
 
 
-parser = argparse.ArgumentParser(description='query-log-tracer')
-
-# Log location
-parser.add_argument('--log-file', help='Input log file')
-parser.add_argument('--log-dir', help='Directory that contains input log files')
-
-# Search (or trace) target options
-parser.add_argument('--target-table', help='Table name of your trace target')
-parser.add_argument('--target-column', help='Column name of you trace target')
-parser.add_argument('--filter-column', help='Column name that should be used for search filtering')
-parser.add_argument('--filter-value', help='Value that should be used for search filtering')
-
-parser.add_argument('--verbose', help='Verbose option', action='store_true')
-
-args = parser.parse_args()
-
-
-def search(f, target_table, target_column, filter_column, filter_value):
+def search(f, target_table, target_column, filter_column, filter_value, verbose=False):
     # History of the values
     histories = []
 
@@ -116,7 +99,7 @@ def search(f, target_table, target_column, filter_column, filter_value):
             tokens = [ token for token in parsed[0].flatten() if not token.is_whitespace ]
 
             # debug
-            if args.verbose:
+            if verbose:
                 print('log_date:', log_date)
                 print('log_id:', log_id)
                 print('log_command:', log_command)
@@ -242,18 +225,33 @@ def search(f, target_table, target_column, filter_column, filter_value):
     return histories
 
 
-def search_from_file(filename, target_table, target_column, filter_column, filter_value):
+def search_from_file(filename, target_table, target_column, filter_column, filter_value, verbose=False):
 
     # Open with binary mode, because sometimes encoding errors occur
     if filename.endswith('.gz'):
         with gzip.open(filename, mode='rb') as f:
-            return search(f, target_table, target_column, filter_column, filter_value)
+            return search(f, target_table, target_column, filter_column, filter_value, verbose)
     else:
         with open(filename, mode='rb') as f:
-            return search(f, target_table, target_column, filter_column, filter_value)
+            return search(f, target_table, target_column, filter_column, filter_value, verbose)
 
 
 def main():
+    parser = argparse.ArgumentParser(description='query-log-tracer')
+
+    # Log location
+    parser.add_argument('--log-file', help='Input log file')
+    parser.add_argument('--log-dir', help='Directory that contains input log files')
+
+    # Search (or trace) target options
+    parser.add_argument('--target-table', help='Table name of your trace target')
+    parser.add_argument('--target-column', help='Column name of you trace target')
+    parser.add_argument('--filter-column', help='Column name that should be used for search filtering')
+    parser.add_argument('--filter-value', help='Value that should be used for search filtering')
+
+    parser.add_argument('--verbose', help='Verbose option', action='store_true')
+
+    args = parser.parse_args()
 
     target_table = args.target_table
     target_column = args.target_column
@@ -262,7 +260,7 @@ def main():
 
     if args.log_file is not None:
         print('=== Searching in {} ==='.format(args.log_file))
-        histories = search_from_file(args.log_file, target_table, target_column, filter_column, filter_value)
+        histories = search_from_file(args.log_file, target_table, target_column, filter_column, filter_value, args.verbose)
 
     elif args.log_dir is not None:
         files = sorted(glob.glob(args.log_dir + '/*'))
@@ -270,7 +268,7 @@ def main():
         current = 1
         for log_file in files:
             print('=== Searching in {} ({}/{}) ==='.format(log_file, current, num_files))
-            histories = search_from_file(log_file, target_table, target_column, filter_column, filter_value)
+            histories = search_from_file(log_file, target_table, target_column, filter_column, filter_value, args.verbose)
             current += 1
 
     print('')

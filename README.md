@@ -1,5 +1,11 @@
 # query-log-tracer
 
+[![PyPI](https://img.shields.io/pypi/v/query-log-tracer)](https://pypi.org/project/query-log-tracer/)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/query-log-tracer)](https://pypi.org/project/query-log-tracer/)
+[![GitHub Repo Size](https://img.shields.io/github/repo-size/kotarot/query-log-tracer)](https://github.com/kotarot/query-log-tracer)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/kotarot/query-log-tracer/Continuous%20Integration)](https://github.com/kotarot/query-log-tracer/actions?query=workflow%3AContinuous%20Integration)
+[![GitHub License](https://img.shields.io/github/license/kotarot/query-log-tracer)](https://github.com/kotarot/query-log-tracer/blob/main/LICENSE)
+
 A Python tool/library that traces a value in MySQL general logs.
 
 ## Usage

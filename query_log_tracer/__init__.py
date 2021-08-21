@@ -1,4 +1,4 @@
-# Copyright 2018 Recruit Communications Co., Ltd.
+# Copyright 2021 Kotaro Terada
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,3 +11,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+from .trace import search_from_file
+
+from .__version__ import __version__, __version_info__
+
+__all__ = ["search_from_file", "__version__", "__version_info__"]

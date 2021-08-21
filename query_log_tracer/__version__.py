@@ -11,3 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+__version__ = "0.0.1"
+__version_info__ = tuple(int(i) if i.isdigit() else i for i in __version__.split("."))
